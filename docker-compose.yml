@@ -9,11 +9,11 @@ services:
             - "8080:1323"
         # Important to bind/mount your codebase dir to /app dir for live reload
         volumes:
-            - ./db-service:/app
+            - ./pc-service:/app
 
     database:
         build:
-            context: ./db-service/docker/
+            context: ./pc-service/docker/
             # Correct the path to your Dockerfile
             dockerfile: Dockerfile
         environment:
@@ -23,4 +23,4 @@ services:
         ports:
             - "5432:5432"
         volumes:
-            - ./db-service/data:/var/lib/postgresql/data:z
+            - ./pc-service/data:/var/lib/postgresql/data:z

@@ -8,6 +8,16 @@ import (
 )
 
 type AppConfig struct {
+	Database DataBaseConfig
+}
+
+type DataBaseConfig struct {
+	DbHost     string
+	DbUser     string
+	DbPassword string
+	DbName     string
+	DbPort     string
+	SslMode    string
 }
 
 var configPath = "./configs"
@@ -15,7 +25,9 @@ var configName = "config"
 
 // ---
 // here are defaults
-var CurrentConfig = &AppConfig{}
+var CurrentConfig = &AppConfig{
+	Database: DataBaseConfig{DbHost: "localhost", DbUser: "user", DbPassword: "password", DbName: "db"},
+}
 
 func ReloadConfig() {
 	defer func() {

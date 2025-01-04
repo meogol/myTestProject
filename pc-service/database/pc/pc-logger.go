@@ -1,18 +1,18 @@
-package database
+package pc
 
 import (
 	"go.uber.org/zap"
 	"meogol/db-service/logger"
 )
 
-var backupsLogger *zap.SugaredLogger
+var pcLogger *zap.SugaredLogger
 
 func init() {
-	backupsLogger = createLogger()
+	pcLogger = createLogger()
 }
 
 func createLogger() *zap.SugaredLogger {
 	return logger.Logger.With(
-		zap.String("service", "database"),
+		zap.String("service", "pc"),
 	).Sugar()
 }
