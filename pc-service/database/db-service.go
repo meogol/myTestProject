@@ -4,14 +4,18 @@ import (
 	"github.com/pkg/errors"
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
-	config2 "meogol/db-service/config"
+	"meogol/pc-service/config"
+	"sync"
 )
 
-var db *gorm.DB
+var (
+	db   *gorm.DB
+	once sync.Once
+)
 
 func initConnection() (*gorm.DB, error) {
 	var err error
-	config := config2.CurrentConfig
+	config := config.CurrentConfig
 	dsn := "host=" + config.Database.DbHost + " user=" + config.Database.DbUser + " password=" + config.Database.DbPassword + " dbname=" + config.Database.DbName + " port=" + config.Database.DbPort + " sslmode=" + config.Database.SslMode
 	db, err := gorm.Open(postgres.Open(dsn), &gorm.Config{})
 	if err != nil {
@@ -32,10 +36,13 @@ func GetInstance() (*gorm.DB, error) {
 	return db, nil
 }
 
-func init() {
+func InitDatabase() error {
 	var err error
-	db, err = GetInstance()
-	if err != nil {
-		dbLogger.DPanicf("failed to connect to database; Reason: %s", err)
-	}
+	once.Do(func() {
+		db, err = GetInstance()
+		if err != nil {
+			dbLogger.DPanicf("failed to connect to database; Reason: %s", err)
+		}
+	})
+	return err
 }

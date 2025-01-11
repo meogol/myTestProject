@@ -1,4 +1,4 @@
-include .env
+#include .env
 
 BINARY_NAME=myTestProject
 

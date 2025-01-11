@@ -2,17 +2,17 @@ package pc
 
 import (
 	"gorm.io/gorm"
-	"meogol/db-service/database"
+	"meogol/pc-service/database"
 )
 
 var db *gorm.DB
 
 type Model struct {
 	gorm.Model
-	Name        string `json:"name"`
-	Description string `json:"description"`
-	Processor   string `json:"processor"`
-	VideoCard   string `json:"video_card"`
+	Name        string
+	Description string
+	Processor   string
+	VideoCard   string
 }
 
 func (Model) TableName() string {
@@ -28,18 +28,47 @@ func Create(model *Model) error {
 	return nil
 }
 
-func init() {
+func Update(id int, model *Model) error {
+	result := db.Model(&Model{}).Where("id = ?", id).Updates(model)
+
+	if result.Error != nil {
+		return result.Error
+	}
+	return nil
+}
+
+func Delete(id int) error {
+	result := db.Delete(&Model{}, id)
+
+	if result.Error != nil {
+		return result.Error
+	}
+	return nil
+}
+
+func Get(id int) (*Model, error) {
+	var model Model
+	result := db.First(&model, id)
+	if result.Error != nil {
+		return nil, result.Error
+	}
+	return &model, nil
+}
+
+func CreateTable() error {
 	var err error
 	db, err = database.GetInstance()
 
 	if err != nil {
 		pcLogger.DPanicf("failed to connect to database; Reason: %s", err)
-		return
+		return err
 	}
 
 	err = db.AutoMigrate(&Model{})
 	if err != nil {
 		pcLogger.DPanicf("failed to connect to database; Reason: %s", err)
-		return
+		return err
 	}
+
+	return nil
 }

@@ -1,15 +1,19 @@
 package main
 
 import (
-	"net/http"
-
-	"github.com/labstack/echo/v4"
+	"fmt"
+	"meogol/pc-service/config"
+	"meogol/pc-service/database"
+	"meogol/pc-service/database/pc"
+	"meogol/pc-service/logger"
+	"meogol/pc-service/routes"
 )
 
 func main() {
-	e := echo.New()
-	e.GET("/", func(c echo.Context) error {
-		return c.String(http.StatusOK, "Hello, World!")
-	})
-	e.Logger.Fatal(e.Start(":1323"))
+	srvConf := config.CurrentConfig.Server
+	r := routes.GetRoutes()
+	logger.Logger.Info("Start server")
+	database.InitDatabase()
+	pc.CreateTable()
+	r.Run(fmt.Sprintf("%s:%d", srvConf.Host, srvConf.Port))
 }

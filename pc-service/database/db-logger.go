@@ -2,7 +2,7 @@ package database
 
 import (
 	"go.uber.org/zap"
-	"meogol/db-service/logger"
+	"meogol/pc-service/logger"
 )
 
 var dbLogger *zap.SugaredLogger
