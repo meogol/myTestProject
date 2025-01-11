@@ -2,13 +2,13 @@ package database
 
 import (
 	"go.uber.org/zap"
-	"meogol/db-service/logger"
+	"meogol/pc-service/logger"
 )
 
-var backupsLogger *zap.SugaredLogger
+var dbLogger *zap.SugaredLogger
 
 func init() {
-	backupsLogger = createLogger()
+	dbLogger = createLogger()
 }
 
 func createLogger() *zap.SugaredLogger {

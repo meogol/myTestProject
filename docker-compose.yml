@@ -1,26 +1,26 @@
 version: "3.8"
 services:
-    db-service:
-        build:
-            context: .
-            # Correct the path to your Dockerfile
-            dockerfile: Dockerfile
-        ports:
-            - "8080:1323"
-        # Important to bind/mount your codebase dir to /app dir for live reload
-        volumes:
-            - ./db-service:/app
+  db-service:
+    build:
+      context: .
+      # Correct the path to your Dockerfile
+      dockerfile: Dockerfile
+    ports:
+      - "8080:1323"
+    # Important to bind/mount your codebase dir to /app dir for live reload
+    volumes:
+      - ./pc-service:/app
 
-    database:
-        build:
-            context: ./db-service/docker/
-            # Correct the path to your Dockerfile
-            dockerfile: Dockerfile
-        environment:
-            POSTGRES_PASSWORD: password
-            POSTGRES_USER: user
-            POSTGRES_ADDITIONAL_DATABASES: mp
-        ports:
-            - "5432:5432"
-        volumes:
-            - ./db-service/data:/var/lib/postgresql/data:z
+  database:
+    build:
+      context: ./pc-service/docker/
+      # Correct the path to your Dockerfile
+      dockerfile: Dockerfile
+    environment:
+      POSTGRES_PASSWORD: "password"
+      POSTGRES_USER: "user"
+      POSTGRES_ADDITIONAL_DATABASES: "db"
+    ports:
+      - "5432:5432"
+    volumes:
+      - ./pc-service/data:/var/lib/postgresql/data:z

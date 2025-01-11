@@ -5,7 +5,7 @@ WORKDIR /app
 
 RUN go install github.com/air-verse/air@latest
 
-COPY db-service/go.mod db-service/go.sum ./
+COPY pc-service/go.mod ./
 RUN go mod download
 
 CMD ["air"]
